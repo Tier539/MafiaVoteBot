@@ -12,9 +12,7 @@ function objToString (obj,votes) {
     var str = '';
     for (var p in obj) {
         if (obj.hasOwnProperty(p)) {
-		if (!votes[obj[p]] = "Unlynch"){
             str += p + ' voted for ' + obj[p]+' ('+votes[obj[p]] + ') \n';
-		}
         }
     }
     return str;
