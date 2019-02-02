@@ -39,7 +39,7 @@ client.on('message', message => {
 		message.channel.send(votetarget+' has been voted for by '+votesender);	
   }  
   if (message.content.substring(0, 6) === '#votes'){
-	  message.channel.send("votes:\n" +objToString(voterecord,votes));
+	  message.channel.send("Votes:\n" +objToString(voterecord,votes));
   }
   if (message.content.substring(0, 8) === '#unlynch'){
 	var votesender = client.users.get(message.author.id);
