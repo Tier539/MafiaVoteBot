@@ -35,8 +35,6 @@ client.on('message', message => {
 	voterecord[votesender]="Unlynch"
   }
 });
-client.login(token);
-
 
 function objToString (obj,votes) {
     var str = '';
@@ -47,3 +45,5 @@ function objToString (obj,votes) {
     }
     return str;
 }
+
+client.login(token);
