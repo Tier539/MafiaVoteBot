@@ -41,7 +41,7 @@ client.on('message', message => {
   }
   if (message.content.substring(0, 8) === '#unlynch'){
 	var votesender = client.users.get(message.author.id);
-	message.channel.send(votesender + "has removed their vote");	
+	message.channel.send(votesender + " has removed their vote");	
 	votes[voterecord[votesender]] -= 1;
 	voterecord[votesender]="Unlynch";
   }
