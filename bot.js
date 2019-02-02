@@ -7,6 +7,17 @@ var voterecord = {};
 client.on('ready', () => {
   console.log('I am ready!');
 });
+
+function objToString (obj,votes) {
+    var str = '';
+    for (var p in obj) {
+        if (obj.hasOwnProperty(p)) {
+            str += p + ' voted for ' + obj[p]+' ('+votes[obj[p]] + ') \n';
+        }
+    }
+    return str;
+}
+
 client.on('message', message => {
 	if (message.content.substring(0, 6) === '#lynch') {
 		var args = message.content.substring(1).split(' ');
@@ -35,15 +46,5 @@ client.on('message', message => {
 	voterecord[votesender]="Unlynch";
   }
 });
-
-function objToString (obj,votes) {
-    var str = '';
-    for (var p in obj) {
-        if (obj.hasOwnProperty(p)) {
-            str += p + ' voted for ' + obj[p]+' ('+votes[obj[p]] + ') \n';
-        }
-    }
-    return str;
-}
 
 client.login(token);
