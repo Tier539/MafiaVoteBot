@@ -28,7 +28,12 @@ client.on('message', message => {
 		var votesenderid = message.author.id;
 		var votesender = client.users.get(votesenderid);
 		votes[voterecord[votesender]] -= 1;
-		voterecord[votesender]=votetarget;
+		var ab = voterecord.hasOwnProperty(votesender);
+		if (!ab){
+			voterecord[votesender]= new Array();
+			console.log("1");
+		}
+		voterecord[votesender].push(votetarget.username);
 		var y = votes.hasOwnProperty(votetarget);
 		if (!y){
 			votes[votetarget] = 1;
@@ -36,7 +41,9 @@ client.on('message', message => {
 		else {
 			votes[votetarget] += 1;
 		}
-		message.channel.send(votetarget+' has been voted for by '+votesender);	
+		message.channel.send(votetarget+' has been voted for by '+votesender);
+		//console.log(voterecord);
+			
   }  
   if (message.content.substring(0, 6) === '#votes'){
 	  message.channel.send("Votes:\n" +objToString(voterecord,votes));
