@@ -1,59 +1,96 @@
-const Discord = require('discord.js');
-const client = new Discord.Client();
-const token = process.env.BOT_TOKEN;
-var votes = {};
-var voterecord = {};
+const Discord = require('discord.js')
+const client = new Discord.Client()
+const token = process.env.BOT_TOKEN
 
-client.on('ready', () => {
-  console.log('I am ready!');
-});
+var votes = {}  //all votes cast, by source
+var voted = {}  //all votes received, by target
+var count = {}  //number of current votes received, by target
 
-function objToString (obj,votes) {
-    var str = '';
-    for (var p in obj) {
-        if (obj.hasOwnProperty(p)) {
-			if (obj[p] != 'Unlynch'){
-            str += p + ' voted for ' + obj[p]+' ('+votes[obj[p]] + ') \n';
-			}
-        }
-    }
-    return str;
+function debug(){
+    console.log('========================= DEBUGGING =========================',
+        '\n\n----- VOTES: all votes cast, by source ----------------------\n', votes, 
+        '\n\n----- VOTED: all votes received, by target ------------------\n', voted, 
+        '\n\n----- COUNT: number of current votes received, by target ----\n', count)
 }
 
-client.on('message', message => {
-	if (message.content.substring(0, 6) === '#lynch') {
-		var args = message.content.substring(1).split(' ');
-		let id = args[1].replace(/[<@!>]/g, '');
-		var votetarget = client.users.get(id);
-		var votesenderid = message.author.id;
-		var votesender = client.users.get(votesenderid);
-		votes[voterecord[votesender]] -= 1;
-		var ab = voterecord.hasOwnProperty(votesender);
-		if (!ab){
-			voterecord[votesender]= new Array();
-			console.log("1");
-		}
-		voterecord[votesender].push(votetarget.username);
-		var y = votes.hasOwnProperty(votetarget);
-		if (!y){
-			votes[votetarget] = 1;
-		}
-		else {
-			votes[votetarget] += 1;
-		}
-		message.channel.send(votetarget+' has been voted for by '+votesender);
-		//console.log(voterecord);
-			
-  }  
-  if (message.content.substring(0, 6) === '#votes'){
-	  message.channel.send("Votes:\n" +objToString(voterecord,votes));
-  }
-  if (message.content.substring(0, 8) === '#unlynch'){
-	var votesender = client.users.get(message.author.id);
-	message.channel.send(votesender + " has removed their vote from "+voterecord[votesender]);	
-	votes[voterecord[votesender]] -= 1;
-	voterecord[votesender]="Unlynch";
-  }
-});
+function postVote(message){
+    try {
+        const source = client.users.get(message.author.id).username
+        const target = client.users.get(message.content.split(' ')[1].slice(2, -1)).username
 
-client.login(token);
+        votes[source] = [target].concat(source in votes ? votes[source] : [])
+        voted[target] = [source].concat(target in voted ? voted[target] : [])
+        count[target] = (target in count ? count[target] : 0) + 1
+
+        message.channel.send(source + ' voted for ' + target)
+    }
+    catch(err) {
+        console.log(err.message)
+        message.channel.send('Invalid user!')
+    }
+}
+
+function deleteVote(message, verbose){
+    const source = client.users.get(message.author.id).username
+    const target = source in votes ? votes[source][0] : false
+
+    if (target) {
+        votes[source][0] = '~~' + target + '~~'
+        voted[target][voted[target].indexOf(source)] = '~~' + source + '~~'
+        count[target] -= 1
+
+        if (verbose) message.channel.send(source + ' has removed their vote from ' + target) 
+    }
+    else {
+        if (verbose) message.channel.send('You have no vote to remove!') 
+    }
+}
+
+function getVotal(message){
+    try {
+        var votal = ''
+
+        for (var target in voted){
+            var line = target + '(' + count[target] + '): '
+            for (let source in voted[target]){
+                line += voted[target][source] + ', '
+            }
+            votal += line.slice(0, -2) + '\n'
+        }
+
+        if (votal) {
+            message.channel.send(votal.slice(0, -1))
+        }
+        else {
+            message.channel.send('No votes recorded yet!')
+        }
+    }
+    catch(err) {
+        console.log(err.message)
+    }
+}
+
+client.on('ready', () => {
+  console.log('VotalBot is ready!')
+})
+
+
+client.on('message', message => {
+    const command = message.content.split(' ')[0]
+
+    if (command === '#debug'){
+        debug()
+    }
+    if (command === '#lynch' || command === '#vote'){
+        deleteVote(message, false)
+        postVote(message)
+    }
+    if (command === '#unlynch' || command === '#unvote'){
+        deleteVote(message, true)
+    }
+    if (command === '#votal' || command === '#votes'){
+        getVotal(message)
+    }
+})
+
+client.login(token)
