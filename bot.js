@@ -6,6 +6,12 @@ var votes = {}  //all votes cast, by source
 var voted = {}  //all votes received, by target
 var count = {}  //number of current votes received, by target
 
+
+function pong(message){
+    console.log(client.pings)
+    message.channel.send('Pong! (' + parseInt(client.ping) + 'ms)')
+}
+
 function debug(){
     console.log('========================= DEBUGGING =========================',
         '\n\n----- VOTES: all votes cast, by source ----------------------\n', votes, 
@@ -15,14 +21,27 @@ function debug(){
 
 function postVote(message){
     try {
-        const source = client.users.get(message.author.id).username
-        const target = client.users.get(message.content.split(' ')[1].slice(2, -1)).username
+        const source = message.author.id
+        const target = message.mentions.users.first().id
+        const ballot = {
+            'active': true,
+            'source': source
+        }
 
-        votes[source] = [target].concat(source in votes ? votes[source] : [])
-        voted[target] = [source].concat(target in voted ? voted[target] : [])
-        count[target] = (target in count ? count[target] : 0) + 1
+        if (source in votes && votes[source] && votes[source][0] === target){
+            message.channel.send('Duplicate vote!')
+        }
+        else {
+            deleteVote(message, false)
 
-        message.channel.send(source + ' voted for ' + target)
+            votes[source] = [target].concat(source in votes ? votes[source] : [])
+            voted[target] = [ballot].concat(target in voted ? voted[target] : [])
+            count[target] = (target in count ? count[target] : 0) + 1
+
+            const voter = client.users.get(source).username
+            const votee = client.users.get(target).username
+            message.channel.send(voter + ' voted for ' + votee)
+        }
     }
     catch(err) {
         console.log(err.message)
@@ -31,33 +50,49 @@ function postVote(message){
 }
 
 function deleteVote(message, verbose){
-    const source = client.users.get(message.author.id).username
+    const source = message.author.id
     const target = source in votes ? votes[source][0] : false
 
     if (target) {
-        votes[source][0] = '~~' + target + '~~'
-        voted[target][voted[target].indexOf(source)] = '~~' + source + '~~'
+        votes[source] = [false].concat(votes[source])
+        voted[target][0].active = false
         count[target] -= 1
 
-        if (verbose) message.channel.send(source + ' has removed their vote from ' + target) 
+        if (verbose) {
+            const voter = client.users.get(source).username
+            const votee = client.users.get(target).username
+            message.channel.send(voter + ' has removed their vote from ' + votee) 
+        }
     }
     else {
-        if (verbose) message.channel.send('You have no vote to remove!') 
+        if (verbose) message.channel.send('You have no active vote to remove!') 
     }
 }
 
 function getVotal(message){
     try {
         var votal = ''
+        var scores = Object.entries(count).sort((a, b) => a[0] - b[0])
 
-        for (var target in voted){
-            var line = target + '(' + count[target] + '): '
-            for (let source in voted[target]){
-                line += voted[target][source] + ', '
+        for (var score of scores) {
+            var target = score[0]
+            var votee = client.users.get(target).username
+            var line = votee + '(' + score[1] + '): '
+
+            for (var i = 0; i < voted[target].length; i++) {
+                var ballot = voted[target][i]
+                var voter = client.users.get(ballot.source).username
+
+                if (ballot.active) {
+                    line += voter + ', '
+                }
+                else {
+                    line += '~~' + voter + '~~, '
+                }
             }
+
             votal += line.slice(0, -2) + '\n'
         }
-
         if (votal) {
             message.channel.send(votal.slice(0, -1))
         }
@@ -74,15 +109,16 @@ client.on('ready', () => {
   console.log('VotalBot is ready!')
 })
 
-
 client.on('message', message => {
-    const command = message.content.split(' ')[0]
+    const command = message.content.split(' ')[0].toLowerCase()
 
+    if (command === '#ping'){
+        pong(message)
+    }
     if (command === '#debug'){
         debug()
     }
     if (command === '#lynch' || command === '#vote'){
-        deleteVote(message, false)
         postVote(message)
     }
     if (command === '#unlynch' || command === '#unvote'){
