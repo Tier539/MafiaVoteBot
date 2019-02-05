@@ -1,11 +1,31 @@
 const Discord = require('discord.js')
 const client = new Discord.Client()
-const token = process.env.BOT_TOKEN
+
+const TOKEN = process.env.BOT_TOKEN
+const PREFIX = '#'
+const CONSOLE = '456642858036887563'
 
 var votes = {}  //all votes cast, by source
 var voted = {}  //all votes received, by target
 var count = {}  //number of current votes received, by target
 
+function startGame(message){
+    const mention = message.mentions.users.first()
+
+    try {
+        const target = mention.username
+        if (target === 'darkusblack') {
+            message.channel.send('Start the game already ' +target+ '!')
+        }
+        else {
+            message.channel.send("You must be new.  Around here, everything is actually Darkus' fault.")
+        }
+    }
+    catch(err) {
+        console.log(err.message)
+        message.channel.send("But who's to blame?")
+    }
+}
 
 function pong(message){
     console.log(client.pings)
@@ -14,9 +34,24 @@ function pong(message){
 
 function debug(){
     console.log('========================= DEBUGGING =========================',
-        '\n\n----- VOTES: all votes cast, by source ----------------------\n', votes, 
-        '\n\n----- VOTED: all votes received, by target ------------------\n', voted, 
-        '\n\n----- COUNT: number of current votes received, by target ----\n', count)
+            '\n\n----- VOTES: all votes cast, by source ----------------------\n', votes, 
+            '\n\n----- VOTED: all votes received, by target ------------------\n', voted, 
+            '\n\n----- COUNT: number of current votes received, by target ----\n', count,
+            '\n\n=============================================================\n\n')
+}
+
+function reset(message){
+    votes = {}
+    voted = {}
+    count = {}
+    message.channel.send('All votes reset!')
+}
+
+function getHelp(message){
+    message.channel.send(`**VotalBot Commands**\n`
+                        + '`.lynch @target` to vote, \n'
+                        + '`.unlynch` to unvote, \n'
+                        + '`.votal` to see votal')
 }
 
 function postVote(message){
@@ -27,7 +62,6 @@ function postVote(message){
             'active': true,
             'source': source
         }
-
         if (source in votes && votes[source] && votes[source][0] === target){
             message.channel.send('Duplicate vote!')
         }
@@ -55,7 +89,10 @@ function deleteVote(message, verbose){
 
     if (target) {
         votes[source] = [false].concat(votes[source])
-        voted[target][0].active = false
+
+        var ballot = voted[target].find(b => b.active === true && b.source === source);
+        ballot.active = false
+
         count[target] -= 1
 
         if (verbose) {
@@ -72,12 +109,12 @@ function deleteVote(message, verbose){
 function getVotal(message){
     try {
         var votal = ''
-        var scores = Object.entries(count).sort((a, b) => a[0] - b[0])
+        var scores = Object.entries(count).sort((a, b) => a[1] - b[1]).reverse()
 
         for (var score of scores) {
             var target = score[0]
-            var votee = client.users.get(target).username
-            var line = votee + '(' + score[1] + '): '
+            var votee = String(client.users.get(target).username)
+            var line = '(' + score[1] + ') ' + votee + ' ← '
 
             for (var i = 0; i < voted[target].length; i++) {
                 var ballot = voted[target][i]
@@ -90,11 +127,28 @@ function getVotal(message){
                     line += '~~' + voter + '~~, '
                 }
             }
-
             votal += line.slice(0, -2) + '\n'
         }
+
+        console.log(votal)
+
         if (votal) {
-            message.channel.send(votal.slice(0, -1))
+            const embed = new Discord.RichEmbed()
+                //.setTitle(')
+                //.setAuthor("STREET CRIME", "https://i.imgur.com/UPhv5UW.png")
+                .setAuthor('══════════ CURRENT VOTES ══════════')
+                .setColor(0x00AE86)
+                .setDescription(votal)
+                //.setFooter('footer', "http://i.imgur.com/w1vhFSR.png")
+                //.setImage('http://i.imgur.com/yVpymuV.png')
+                //.setThumbnail('https://i.imgur.com/vaKHxja.png')
+                .setTimestamp()
+                //.setURL('https://ffa.fyi')
+                //.addField('title', votal)
+                //.addField('title', 'inline', true)
+                //.addBlankField(true)
+             
+            message.channel.send({embed})
         }
         else {
             message.channel.send('No votes recorded yet!')
@@ -110,23 +164,41 @@ client.on('ready', () => {
 })
 
 client.on('message', message => {
-    const command = message.content.split(' ')[0].toLowerCase()
+    if (message.content.startsWith(PREFIX)) {
+        const command = message.content.split(' ')[0].toLowerCase().slice(1)
+        console.log(command)
 
-    if (command === '#ping'){
-        pong(message)
-    }
-    if (command === '#debug'){
-        debug()
-    }
-    if (command === '#lynch' || command === '#vote'){
-        postVote(message)
-    }
-    if (command === '#unlynch' || command === '#unvote'){
-        deleteVote(message, true)
-    }
-    if (command === '#votal' || command === '#votes'){
-        getVotal(message)
+        if (command === 'start') { 
+            startGame(message)
+        }
+        if (command === 'ping') { 
+            pong(message) 
+        }
+        if (command === 'debug') { 
+            debug() 
+        }
+        if (command === 'help') { 
+            getHelp(message) 
+        }
+        if (command === 'lynch' || command === 'vote') { 
+            postVote(message) 
+        }
+        if (command === 'unlynch' || command === 'unvote') { 
+            deleteVote(message, true) 
+        }
+        if (command === 'votal' || command === 'votes') { 
+            getVotal(message) 
+        }    
+
+        if (message.channel.id === CONSOLE ) {
+            if (command === 'test') { 
+                message.channel.send('Success!') 
+            }
+            if (command === 'reset') { 
+                reset(message) 
+            }
+        }
     }
 })
 
-client.login(token)
+client.login(TOKEN)
