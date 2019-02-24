@@ -159,6 +159,9 @@ client.on('message', message => {
         if (command === 'help') { 
             getHelp(message) 
         }
+        if (command === 'Darkus') { 
+        message.channel.send('If Darkus drove a truck, it would be a Dodge')    
+        }        
         if (command === 'lynch' || command === 'vote') { 
             postVote(message) 
         }
