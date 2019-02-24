@@ -14,10 +14,6 @@ function pong(message){
     message.channel.send('Pong! (' + parseInt(client.ping) + 'ms)')
 }
 
-function darkus(){
-    message.channel.send('If Darkus drove a truck, it would be a Dodge')
-}
-
 function debug(){
     console.log('========================= DEBUGGING =========================',
             '\n\n----- VOTES: all votes cast, by source ----------------------\n', votes, 
@@ -162,10 +158,7 @@ client.on('message', message => {
         }
         if (command === 'help') { 
             getHelp(message) 
-        }
-        if (command === 'darkus') { 
-            darkus()
-        }        
+        }       
         if (command === 'lynch' || command === 'vote') { 
             postVote(message) 
         }
