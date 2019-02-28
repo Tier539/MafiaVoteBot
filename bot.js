@@ -45,7 +45,7 @@ function postVote(message){
             'source': source
         }
         if (source in votes && votes[source] && votes[source][0] === target){
-            message.channel.send('Duplicate vote!')
+            message.channel.send('Duplicate vote! VOTE FOR NAV!! VOTE FOR NAV!!')
         }
         else {
             deleteVote(message, false)
@@ -56,12 +56,12 @@ function postVote(message){
 
             const voter = client.users.get(source).username
             const votee = client.users.get(target).username
-            message.channel.send(voter + ' voted for ' + votee)
+            message.channel.send(voter + ' voted for ' + votee + '(BETTER BE NAV!!!))
         }
     }
     catch(err) {
         console.log(err.message)
-        message.channel.send('Invalid user!')
+        message.channel.send('Invalid user! VOTE FOR NAV!! VOTE FOR NAV!! VOTE FOR NAV!!')
     }
 }
 
@@ -84,7 +84,7 @@ function deleteVote(message, verbose){
         }
     }
     else {
-        if (verbose) message.channel.send('You have no active vote to remove!') 
+        if (verbose) message.channel.send('You have no active vote to remove! VOTE FOR NAV!! VOTE FOR NAV!!') 
     }
 }
 
@@ -118,9 +118,9 @@ function getVotal(message){
             const embed = new Discord.RichEmbed()
                 //.setTitle(')
                 //.setAuthor("STREET CRIME", "https://i.imgur.com/UPhv5UW.png")
-                .setAuthor('══════════ CURRENT VOTES ══════════')
+                .setAuthor('══════════ VOTE FOR NAV!! VOTE FOR NAV!! VOTE FOR NAV!!  ══════════')
                 .setColor(0x00AE86)
-                .setDescription(votal)
+                .setDescription(votal + '\n VOTE FOR NAV!! VOTE FOR NAV!! VOTE FOR NAV!!')
                 //.setFooter('footer', "http://i.imgur.com/w1vhFSR.png")
                 //.setImage('http://i.imgur.com/yVpymuV.png')
                 //.setThumbnail('https://i.imgur.com/vaKHxja.png')
