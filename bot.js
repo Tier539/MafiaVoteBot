@@ -112,7 +112,7 @@ function getVotal(message){
             votal += line.slice(0, -2) + '\n'
         }
 
-        console.log(votal)
+        //console.log(votal)
 
         if (votal) {
             const embed = new Discord.RichEmbed()
@@ -137,7 +137,7 @@ function getVotal(message){
         }
     }
     catch(err) {
-        console.log(err.message)
+        //console.log(err.message)
     }
 }
 
