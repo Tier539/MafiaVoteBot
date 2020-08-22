@@ -56,12 +56,12 @@ function postVote(message){
 
             const voter = client.users.get(source).username
             const votee = client.users.get(target).username
-            message.channel.send(voter + ' voted for ' + votee)
+            message.channel.send(voter + ' voted for ' + votee + ' butty')
         }
     }
     catch(err) {
         console.log(err.message)
-        message.channel.send('Invalid user!')
+        message.channel.send('Invalid user, dummy!')
     }
 }
 
