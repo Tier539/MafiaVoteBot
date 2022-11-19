@@ -131,10 +131,10 @@ function getVotal(message){
                 //.addField('title', 'inline', true)
                 //.addBlankField(true)
              
-            message.channel.send({embed})
+            channel.send({embed})
         }
         else {
-            message.channel.send('No votes recorded yet!')
+            channel.send('No votes recorded yet!')
         }
     }
     catch(err) {
