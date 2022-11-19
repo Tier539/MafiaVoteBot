@@ -3,7 +3,7 @@ const client = new Discord.Client()
 
 const TOKEN = process.env.BOT_TOKEN
 const PREFIX = '#'
-const CONSOLE = '456642858036887563'
+const CONSOLE = '446801333719400450'
 
 var votes = {}  //all votes cast, by source
 var voted = {}  //all votes received, by target
