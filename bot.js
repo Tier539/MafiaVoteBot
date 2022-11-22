@@ -32,9 +32,9 @@ function reset(message){
 
 function getHelp(message){
     message.channel.send(`**VotalBot Commands**\n`
-                        + '`.lynch @target` to vote, \n'
-                        + '`.unlynch` to unvote, \n'
-                        + '`.votal` to see votal')
+                        + '`#lynch @target` to vote, \n'
+                        + '`#unlynch` to unvote, \n'
+                        + '`#votal` to see votal')
 }
 
 function postVote(message){
@@ -117,14 +117,14 @@ function getVotal(message){
 
         if (votal) {
             const embed = new Discord.RichEmbed()
-                //.setTitle(')
+                .setTitle('Vote Count')
                 //.setAuthor("STREET CRIME", "https://i.imgur.com/UPhv5UW.png")
-                .setAuthor('══════════ VOTE COUNT ══════════')
+                .setAuthor('Poe')
                 .setColor(0x00AE86)
                 .setDescription(votal)
-                //.setFooter('footer', "http://i.imgur.com/w1vhFSR.png")
-                //.setImage('http://i.imgur.com/yVpymuV.png')
-                //.setThumbnail('https://i.imgur.com/vaKHxja.png')
+                .setFooter('footer', "http://i.imgur.com/w1vhFSR.png")
+                .setImage('http://i.imgur.com/yVpymuV.png')
+                .setThumbnail('https://i.imgur.com/vaKHxja.png')
                 .setTimestamp()
                 //.setURL('https://ffa.fyi')
                 //.addField('title', votal)
