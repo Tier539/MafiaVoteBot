@@ -1,6 +1,6 @@
 const Discord = require('discord.js')
 const client = new Discord.Client()
-const channel = client.channels.cache.get('1041920525066317944');
+//const channel = client.channels.cache.get('1041920525066317944');
 
 const TOKEN = process.env.BOT_TOKEN
 const PREFIX = '#'
