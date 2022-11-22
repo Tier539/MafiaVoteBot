@@ -116,13 +116,13 @@ function getVotal(message){
 
         if (votal) {
             const embed = new Discord.RichEmbed()
-                //.setTitle(')
+                .setTitle('Whos Mans Is This?')
                 //.setAuthor({ name: 'STREET CRIME', iconURL: 'https://i.imgur.com/UPhv5UW.png', url: 'https://discord.js.org' })
                 .setAuthor("STREET CRIME", "https://i.imgur.com/UPhv5UW.png")
                 .setAuthor('══════════ VOTE COUNT ══════════')
                 .setColor(0x00AE86)
                 .setDescription(votal)
-                //.setFooter('footer', "http://i.imgur.com/w1vhFSR.png")
+                .setFooter('footer', "http://i.imgur.com/w1vhFSR.png")
                 //.setImage('http://i.imgur.com/yVpymuV.png')
                 //.setThumbnail('https://i.imgur.com/vaKHxja.png')
                 .setTimestamp()
