@@ -1,6 +1,5 @@
 const Discord = require('discord.js')
 const client = new Discord.Client()
-//const channel = client.channels.cache.get('1041920525066317944');
 
 const TOKEN = process.env.BOT_TOKEN
 const PREFIX = '#'
@@ -131,10 +130,10 @@ function getVotal(message){
                 //.addField('title', 'inline', true)
                 //.addBlankField(true)
              
-            channel.send({embed})
+            message.channel.send({embed})
         }
         else {
-            channel.send('No votes recorded yet!')
+            message.channel.send('No votes recorded yet!')
         }
     }
     catch(err) {
