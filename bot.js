@@ -119,7 +119,7 @@ function getVotal(message){
                 .setTitle('Whos Mans Is This?')
                 //.setAuthor({ name: 'STREET CRIME', iconURL: 'https://i.imgur.com/UPhv5UW.png', url: 'https://discord.js.org' })
                 .setAuthor("STREET CRIME", "https://i.imgur.com/UPhv5UW.png")
-                .setAuthor('══════════ VOTE COUNT ══════════')
+                //setAuthor('══════════ VOTE COUNT ══════════')
                 .setColor(0x00AE86)
                 .setDescription(votal)
                 .setFooter('footer', "http://i.imgur.com/w1vhFSR.png")
