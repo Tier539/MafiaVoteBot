@@ -32,9 +32,9 @@ function reset(message){
 
 function getHelp(message){
     message.channel.send(`**VotalBot Commands**\n`
-                        + '`#lynch @target` to vote, \n'
-                        + '`#unlynch` to unvote, \n'
-                        + '`#votal` to see votal')
+                        + '`.lynch @target` to vote, \n'
+                        + '`.unlynch` to unvote, \n'
+                        + '`.votal` to see votal')
 }
 
 function postVote(message){
