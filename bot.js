@@ -151,20 +151,24 @@ client.on('message', message => {
         console.log(command)
 
         if (command === 'ping') { 
-            pong(message) 
+            //pong(message)
+            message.channel.send('Please use Emojis to Vote!')
         }
         if (command === 'debug') { 
-            debug() 
+            //debug()
+            message.channel.send('Please use Emojis to Vote!')
         }
         if (command === 'help') { 
-            getHelp(message) 
+            //getHelp(message)
+            message.channel.send('Please use Emojis to Vote!')
         }       
         if (command === 'lynch' || command === 'vote') { 
             //postVote(message)
             message.channel.send('Please use Emojis to Vote!')
         }
         if (command === 'unlynch' || command === 'unvote') { 
-            deleteVote(message, true) 
+            //deleteVote(message, true)
+            message.channel.send('Please use Emojis to Vote!')
         }
         if (command === 'votal' || command === 'votes') { 
             //getVotal(message)
