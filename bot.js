@@ -173,7 +173,11 @@ client.on('message', message => {
         if (command === 'votal' || command === 'votes') { 
             //getVotal(message)
             message.channel.send('Please use Emojis to Vote!')  
-        }    
+        }
+        if (command === 'votals' || command === 'votes') { 
+            //getVotal(message)
+            message.channel.send('Please use Emojis to Vote!')  
+        }
 
         if (message.channel.id === CONSOLE ) {
             if (command === 'test') { 
