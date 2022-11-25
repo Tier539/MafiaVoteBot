@@ -170,11 +170,7 @@ client.on('message', message => {
             //deleteVote(message, true)
             message.channel.send('Please use Emojis to Vote!')
         }
-        if (command === 'votal' || command === 'votes') { 
-            //getVotal(message)
-            message.channel.send('Please use Emojis to Vote!')  
-        }
-        if (command === 'votals' || command === 'votes') { 
+        if (command === 'votal' || command === 'votes' || command === 'votals') { 
             //getVotal(message)
             message.channel.send('Please use Emojis to Vote!')  
         }
