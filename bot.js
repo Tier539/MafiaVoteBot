@@ -142,6 +142,7 @@ function getVotal(message){
 }
 
 client.on('ready', () => {
+  client.user.setUsername("Use Emojis to Vote");
   console.log('VotalBot is ready!')
 })
 
