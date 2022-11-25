@@ -161,14 +161,14 @@ client.on('message', message => {
         }       
         if (command === 'lynch' || command === 'vote') { 
             //postVote(message)
-            message.channel.send('Bot is trash. Please use Emojis to Vote!')
+            message.channel.send('Please use Emojis to Vote!')
         }
         if (command === 'unlynch' || command === 'unvote') { 
             deleteVote(message, true) 
         }
         if (command === 'votal' || command === 'votes') { 
             //getVotal(message)
-            message.channel.send('Bot is trash. Please use Emojis to Vote!')  
+            message.channel.send('Please use Emojis to Vote!')  
         }    
 
         if (message.channel.id === CONSOLE ) {
