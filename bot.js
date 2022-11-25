@@ -118,7 +118,7 @@ function getVotal(message){
             const embed = new Discord.RichEmbed()
                 .setTitle('Mafia Votes')
                 //.setAuthor({ name: 'STREET CRIME', iconURL: 'https://i.imgur.com/UPhv5UW.png', url: 'https://discord.js.org' })
-                .setAuthor("STREET CRIME", "https://i.imgur.com/UPhv5UW.png")
+                .setAuthor("Edgar Allen Poe", "https://i.imgur.com/grzctVp.png")
                 .setColor(0x00AE86)
                 .setDescription(votal)
                 .setFooter('Manny loves it here', "https://i.imgur.com/8kVrUV9.png")
